@@ -34,7 +34,9 @@ class HeuristicMiner:
 			if edge[0] == path[-1][1]:
 				new_path = path
 				new_path.append(edge)
-				if self.calculate_absolute_frequency(new_path) >= self.frequency_threshold and self.calculate_relative_frequency(new_path, new_path[0]) >= self.significance_threshold:
+				absolute_frequency = edge[2]
+				relative_frequency = self.calculate_relative_frequency(new_path, new_path[0])
+				if absolute_frequency >= self.frequency_threshold and relative_frequency >= self.significance_threshold:
 					is_maximal = False
 					self.expand_and_check_maximal_path(new_path)
 
