@@ -20,21 +20,21 @@ def create_adjacency_list(edges):
 graph_retriever = GraphRetriever(uri, username, password)
 
 # Fetch EKG
-ekg_query = "MATCH (e1:Event)-[:DF]->(e2:Event) RETURN e1, e2 LIMIT 1000"
-ekg_edges = graph_retriever.fetch_graph(ekg_query)
+ekg_edges = graph_retriever.fetch_ekg_graph()
 ekg = create_adjacency_list(ekg_edges)
 
 # Fetch ECKG
-eckg_query = "MATCH (ec1:Event)-[:DF]->(ec2:Event) RETURN DISTINCT ec1.termName as e1, ec2.termName as e2"
-eckg_edges = graph_retriever.fetch_graph(eckg_query)
+eckg_edges = graph_retriever.fetch_eckg_graph()
 eckg = create_adjacency_list(eckg_edges)
 
 # Close the connection
-graph_retriever.close()
 
 # Now ekg and eckg contain your graphs as adjacency lists
 print("EKG:", ekg)
 print("ECKG:", eckg)
 
-heuristic_miner = HeuristicMiner(ekg, eckg, frequency_threshold, significance_threshold)
+heuristic_miner = HeuristicMiner(ekg, eckg, frequency_threshold, significance_threshold, graph_retriever)
 
+significance_paths = heuristic_miner.find_maximal_significant_paths()
+
+graph_retriever.close()
