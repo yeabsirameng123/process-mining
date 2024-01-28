@@ -4,16 +4,17 @@ from heuristic_miner import HeuristicMiner
 uri = "neo4j://localhost:7687"  # Replace with your URI
 username = "neo4j"              # Replace with your username
 password = "qwerqwer"           # Replace with your password
-frequency_threshold = 50
-significance_threshold = 0.8
+frequency_threshold = 250
+significance_threshold = 0.2
 
 
 def create_adjacency_list(edges):
 	graph = {}
 	for (start, end) in edges:
-		if start not in graph:
-			graph[start] = []
-		graph[start].append(end)
+		id = start.get('Activity')
+		if id not in graph:
+			graph[id] = [start]
+		graph[id].append(end)
 	return graph
 
 
@@ -59,9 +60,10 @@ print("Computing significant paths...")
 
 significance_paths = heuristic_miner.find_maximal_significant_paths()
 
-print(significance_paths)
+#print(significance_paths)
 
 print("Finished computing significant paths")
+print("Found " + str(len(significance_paths)) + " paths")
 
 print("Closing database...")
 

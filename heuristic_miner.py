@@ -15,12 +15,15 @@ class HeuristicMiner:
 		return frequency
 
 	def calculate_relative_frequency(self, path, start):
-		total_count = 0
+		total_count = -1
 		path_count = 0
-		for edge in self.ekg:
-			if edge[0] == start:
+		#tmp = self.ekg[start]
+		id = start.get('ID')
+		index = len(path)-1
+		if id in self.ekg:
+			for edge in self.ekg[id]:
 				total_count += 1
-				if edge == path:
+				if edge.get('Activity') == path[index][1].get('ID'):
 					path_count += 1
 		
 		if total_count > 0:
@@ -30,12 +33,14 @@ class HeuristicMiner:
 
 	def expand_and_check_maximal_path(self, path):
 		is_maximal = True
+		index = len(path)-1
 		for edge in self.eckg:
-			if edge[0] == path[-1][1]:
+			if edge[0] == path[index][1]:
 				new_path = path
 				new_path.append(edge)
 				absolute_frequency = edge[2]
-				relative_frequency = self.calculate_relative_frequency(new_path, new_path[0])
+				relative_frequency = self.calculate_relative_frequency(new_path, edge[0])
+				print(relative_frequency)
 				if absolute_frequency >= self.frequency_threshold and relative_frequency >= self.significance_threshold:
 					is_maximal = False
 					self.expand_and_check_maximal_path(new_path)
