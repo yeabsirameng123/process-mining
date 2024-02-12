@@ -4,7 +4,7 @@ from heuristic_miner import HeuristicMiner
 uri = "neo4j://localhost:7687"  # Replace with your URI
 username = "neo4j"              # Replace with your username
 password = "qwerqwer"           # Replace with your password
-frequency_threshold = 250
+frequency_threshold = 25
 significance_threshold = 0.2
 
 

@@ -23,7 +23,8 @@ class HeuristicMiner:
 		if id in self.ekg:
 			for edge in self.ekg[id]:
 				total_count += 1
-				if edge.get('Activity') == path[index][1].get('ID'):
+				id = path[index].get('ID')
+				if edge.get('Activity') == id:
 					path_count += 1
 		
 		if total_count > 0:
@@ -35,9 +36,9 @@ class HeuristicMiner:
 		is_maximal = True
 		index = len(path)-1
 		for edge in self.eckg:
-			if edge[0] == path[index][1]:
+			if edge[0] == path[index]:
 				new_path = path
-				new_path.append(edge)
+				new_path.append(edge[1])
 				absolute_frequency = edge[2]
 				relative_frequency = self.calculate_relative_frequency(new_path, edge[0])
 				print(relative_frequency)
@@ -51,7 +52,7 @@ class HeuristicMiner:
 	def find_maximal_significant_paths(self):
 		self.significance_paths = []
 		for edge in self.eckg:
-			path = [edge]
+			path = [edge[0], edge[1]]
 			self.expand_and_check_maximal_path(path)
 
 		return self.significance_paths
