@@ -1,5 +1,6 @@
 from graph_retriever import GraphRetriever
 from heuristic_miner import HeuristicMiner
+import time
 
 uri = "neo4j://localhost:7687"  # Replace with your URI
 username = "neo4j"              # Replace with your username
@@ -26,7 +27,8 @@ def create_eckg_adjacency_list(edges):
 		graph[start].append((end, count))
 	return graph
 
-# Initialize GraphRetriever
+start_time = time.time()
+
 graph_retriever = GraphRetriever(uri, username, password)
 
 print("Fetching EKG...")
@@ -36,6 +38,7 @@ ekg_edges = graph_retriever.fetch_ekg_graph()
 ekg = create_adjacency_list(ekg_edges)
 
 print("Finished fetching EKG")
+ekg_time = time.time()
 print("Fetching ECKG...")
 
 # Fetch ECKG
@@ -44,6 +47,7 @@ eckg_edges = graph_retriever.fetch_eckg_graph()
 eckg =eckg_edges
 
 print("Finished fetching ECKG")
+eckg_time = time.time()
 
 
 
@@ -66,7 +70,12 @@ print("Finished computing significant paths")
 print("Found " + str(len(significance_paths)) + " paths")
 
 print("Closing database...")
+end_time = time.time()
 
 graph_retriever.close()
 
 print("Finished closing database")
+print("Fetching ekg: " + str((ekg_time - start_time)))
+print("Fetching eckg: " + str((eckg_time - ekg_time)))
+print("Calculating: " + str((end_time - eckg_time)))
+print("Total: " + str((end_time - start_time)))
