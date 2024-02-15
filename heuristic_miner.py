@@ -36,7 +36,7 @@ class HeuristicMiner:
 		is_maximal = True
 		index = len(path)-1
 		for edge in self.eckg:
-			if edge[0] == path[index]:
+			if edge[0] == path[index] and edge[1] not in path:
 				new_path = path
 				new_path.append(edge[1])
 				absolute_frequency = edge[2]
