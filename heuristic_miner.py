@@ -15,35 +15,30 @@ class HeuristicMiner:
         return frequency
 
     def calculate_relative_frequency(self, path, start):
-        total_count = 1
+        total_count = -1
         path_count = 0
         #tmp = self.ekg[start]
-        for node_class in path:
-            x=node_class[0]
-            total_count=total_count*self.graph_retriever.get_events_of_class(x.get('ID'))
         id = start.get('ID')
         index = len(path)-1
         if id in self.ekg:
             for edge in self.ekg[id]:
                 total_count += 1
-                if edge.get('Activity') == path[index][1].get('ID'):
+                id = path[index].get('ID')
+                if edge.get('Activity') == id:
                     path_count += 1
-            
+        
         if total_count > 0:
             return path_count / total_count
         else:
             return 0
-    
 
-    
-    
     def expand_and_check_maximal_path(self, path):
         is_maximal = True
         index = len(path)-1
         for edge in self.eckg:
             if edge[0] == path[index][1]:
                 new_path = path
-                new_path.append(edge)
+                new_path.append(edge[1])
                 absolute_frequency = edge[2]
                 relative_frequency = self.calculate_relative_frequency(new_path, edge[0])
                 print(relative_frequency)
