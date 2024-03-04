@@ -38,9 +38,6 @@ class GraphRetriever:
 
         
     def create_node(self, tx, element_id, labels, properties):
-        # for key, value in properties.items():
-        #     properties[key] = str(value)
-        # flattened_properties = {key: str(value) if not isinstance(value, (int, float, str, bool)) else value for key, value in properties.items()}
         create_node_query = (
         "CREATE (n:Class {element_id: $element_id, labels: $labels, Type: $properties.Type, ID: $properties.ID, Name: $properties.Name}) "
         "RETURN id(n) AS node_id"
